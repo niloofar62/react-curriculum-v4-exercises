@@ -7,9 +7,14 @@ export default function BugStrictMode() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       setCount((c) => c + 1);
     }, 1000);
+
+    //  cleanup to prevent duplicate intervals
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
@@ -20,4 +25,5 @@ export default function BugStrictMode() {
   );
 }
 
-// Write your explanation of how StrictMode helps us catch this bug
+//StrictMode runs effects twice in development, which exposed that the interval was not cleaned up,
+//  causing duplicate timers; adding a cleanup function fixes the bug.
