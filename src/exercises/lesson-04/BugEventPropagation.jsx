@@ -1,12 +1,10 @@
-// TOPIC: Event Bubbling & Stopping Propagation
-// TASK: Ensure only the inner button's action triggers an alert when the button is pushed
-
 export default function BugEventPropagation() {
   function handleOuterClick() {
     alert("RED BOX CLICKED ❌ Don't show me!");
   }
 
-  function handleInnerClick() {
+  function handleInnerClick(e) {
+    e.stopPropagation();
     alert('Button Clicked ✅');
   }
 
@@ -22,3 +20,9 @@ export default function BugEventPropagation() {
     </>
   );
 }
+
+// Explanation:
+// By default, click events bubble from the child element to the parent element.
+// When the button was clicked, both the button and the red box handlers were triggered.
+// I fixed this by calling event.stopPropagation() inside the button handler,
+// which prevents the event from reaching the parent element.
